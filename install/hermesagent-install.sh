@@ -103,7 +103,6 @@ chmod 750 /home/hermes
 chmod 700 /home/hermes/.hermes
 if [[ -f /home/hermes/.config/systemd/user/hermes-gateway.service ]]; then
   su - hermes -c 'systemctl --user enable --now hermes-gateway'
-  echo "Gateway service enabled and started."
 fi
 echo "Hermes setup complete. File permissions restored."
 SETUP
