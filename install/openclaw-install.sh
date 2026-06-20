@@ -14,10 +14,10 @@ network_check
 update_os
 
 msg_info "Installing Dependencies"
-$STD apt install -y git
+$STD apt-get install -y curl sudo mc git
 msg_ok "Installed Dependencies"
 
-NODE_VERSION="22" NODE_MODULE="openclaw" setup_nodejs
+NODE_VERSION="24" NODE_MODULE="openclaw" setup_nodejs
 
 msg_info "Setup OpenClaw"
 mkdir -p /root/.openclaw

@@ -2,7 +2,7 @@
 source <(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVED/main/misc/build.func)
 # Copyright (c) 2021-2026 community-scripts ORG
 # Author: pfassina
-# License: MIT | https://github.com/community-scripts/ProxmoxVE/raw/main/LICENSE
+# License: MIT | https://github.com/community-scripts/ProxmoxVED/raw/main/LICENSE
 # Source: https://github.com/openclaw/openclaw
 
 APP="OpenClaw"
@@ -12,6 +12,7 @@ var_ram="${var_ram:-2048}"
 var_disk="${var_disk:-4}"
 var_os="${var_os:-debian}"
 var_version="${var_version:-13}"
+var_arm64="${var_arm64:-no}"
 var_unprivileged="${var_unprivileged:-1}"
 
 header_info "$APP"
@@ -31,7 +32,7 @@ function update_script() {
   systemctl stop openclaw
   msg_ok "Stopped Service"
 
-  NODE_VERSION="22" NODE_MODULE="openclaw" setup_nodejs
+  NODE_VERSION="24" NODE_MODULE="openclaw" setup_nodejs
   msg_info "Starting Service"
   systemctl start openclaw
   msg_ok "Started Service"
