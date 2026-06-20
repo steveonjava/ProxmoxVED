@@ -39,7 +39,7 @@ After=network.target
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/openclaw gateway --allow-unconfigured --port 18789 --bind lan
+ExecStart=/usr/bin/openclaw gateway --port 18789 --bind lan
 Restart=always
 RestartSec=10
 Environment=NODE_ENV=production
