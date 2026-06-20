@@ -35,15 +35,14 @@ function update_script() {
     systemctl stop stoatchat-api stoatchat-events stoatchat-autumn stoatchat-january stoatchat-crond
     msg_ok "Stopped Services"
 
-    msg_info "Backing up Configuration"
-    cp /Revolt.toml /opt/stoatchat_revolt.toml.bak
-    msg_ok "Backed up Configuration"
+    create_backup /Revolt.toml
 
     CLEAN_INSTALL=1 fetch_and_deploy_gh_release "stoatchat" "stoatchat/stoatchat" "tarball"
 
     msg_info "Rebuilding Backend (Patience)"
     cd /opt/stoatchat
-    $STD cargo build --release --bins -j 2
+    CARGO_PROFILE_RELEASE_LTO=thin \
+      $STD cargo build --release --bins -j 2
     msg_ok "Rebuilt Backend"
 
     msg_info "Updating Web Frontend"
@@ -63,10 +62,7 @@ function update_script() {
     $STD pnpm --filter client exec vite build
     msg_ok "Updated Web Frontend"
 
-    msg_info "Restoring Configuration"
-    cp /opt/stoatchat_revolt.toml.bak /Revolt.toml
-    rm -f /opt/stoatchat_revolt.toml.bak
-    msg_ok "Restored Configuration"
+    restore_backup
 
     msg_info "Starting Services"
     systemctl start stoatchat-api stoatchat-events stoatchat-autumn stoatchat-january stoatchat-crond
