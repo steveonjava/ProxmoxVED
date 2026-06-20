@@ -21,14 +21,25 @@ NODE_VERSION="24" NODE_MODULE="openclaw" setup_nodejs
 
 msg_info "Setup OpenClaw"
 mkdir -p /root/.openclaw
+GATEWAY_TOKEN=$(openssl rand -hex 16)
 cat <<CONF >/root/.openclaw/openclaw.json
 {
   "gateway": {
+    "mode": "local",
     "bind": "lan",
-    "port": 18789
+    "port": 18789,
+    "auth": {
+      "mode": "token",
+      "token": "${GATEWAY_TOKEN}"
+    }
   }
 }
 CONF
+{
+  echo "OpenClaw Gateway"
+  echo "URL: http://<container-ip>:18789"
+  echo "Auth Token: ${GATEWAY_TOKEN}"
+} >>~/openclaw.creds
 msg_ok "Setup OpenClaw"
 
 msg_info "Creating Service"
@@ -48,7 +59,7 @@ Environment=PATH=/usr/bin:/usr/local/bin:/bin
 [Install]
 WantedBy=multi-user.target
 EOF
-systemctl enable -q openclaw
+systemctl enable -q --now openclaw.service
 msg_ok "Created Service"
 
 motd_ssh
